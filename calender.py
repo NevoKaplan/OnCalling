@@ -22,22 +22,22 @@ class Calender:
             is_date_selected = False
 
             unavailable_people_count = 0
-            amount_of_tries = 0
+            weight_offset = 0
             try:
 
                 while not is_date_selected:
-                    if unavailable_people_count >= len(self.people) or amount_of_tries > MAX_TRIES:
+                    if unavailable_people_count >= len(self.people):
                         raise NoAvailablePersonOnDate("No people :(", date=day)
                     for person in self.people:
                         if day in person.unavailabilities:
                             unavailable_people_count += 1
                             continue
-                        if person.add_on_call_date_by_rules(date_to_add=day, weight_offset=amount_of_tries):
+                        if person.add_on_call_date_by_rules(date_to_add=day, weight_offset=weight_offset):
                             is_date_selected = True
                             self.date_to_person[day] = person
                             break
 
-                        amount_of_tries += 1
+                        weight_offset += 5
 
             except NoAvailablePersonOnDate:
                 self.date_to_person[day] = None
