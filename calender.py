@@ -4,8 +4,6 @@ from datetime import date, timedelta
 from exceptions import NoAvailablePersonOnDate
 from person import Person
 
-MAX_TRIES = 100
-
 class Calender:
     def __init__(self, people: list[Person]):
         self.people = people
@@ -19,30 +17,33 @@ class Calender:
     def on_calling(self, current_month: int) -> None:
         for day in _iter_month(month=current_month):
             self.order_people()
-            is_date_selected = False
-
-            unavailable_people_count = 0
-            weight_offset = 0
             try:
-
-                while not is_date_selected:
-                    if unavailable_people_count >= len(self.people):
-                        raise NoAvailablePersonOnDate("No people :(", date=day)
-                    for person in self.people:
-                        if day in person.unavailabilities:
-                            unavailable_people_count += 1
-                            continue
-                        if person.add_on_call_date_by_rules(date_to_add=day, weight_offset=weight_offset):
-                            is_date_selected = True
-                            self.date_to_person[day] = person
-                            break
-
-                        weight_offset += 5
-
+                self.select_date(day)
             except NoAvailablePersonOnDate:
                 self.date_to_person[day] = None
                 continue
 
+
+    def select_date(self, day: date) -> None:
+        weight_offset = 0
+        unavailable_people_count = 0
+        is_date_selected = False
+
+        while not is_date_selected:
+            if unavailable_people_count >= len(self.people):
+                raise NoAvailablePersonOnDate("No people :(", date=day)
+            for person in self.people:
+                if day in person.unavailabilities:
+                    unavailable_people_count += 1
+                    continue
+                if person.add_on_call_date_by_rules(
+                        date_to_add=day, weight_offset=(weight_offset + len(person.unavailabilities))
+                ):
+                    self.date_to_person[day] = person
+                    is_date_selected = True
+                    break
+
+                weight_offset += 5
 
 
     def order_people(self) -> None:
@@ -62,3 +63,13 @@ def _iter_month(month: int, year: int = date.today().year):
     while current < end:
         yield current
         current += timedelta(days=1)
+
+def get_people_on_call_biggest_diff(calender: Calender) -> int:
+    if len(calender.people) < 2:
+        return 0
+
+    on_call_for = [person.get_on_call_amount for person in calender.people]
+    return max(on_call_for) - min(on_call_for)
+
+def select_most_equal_calendar(calenders: list[Calender]) -> Calender:
+    return min(calenders, key=get_people_on_call_biggest_diff)

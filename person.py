@@ -1,5 +1,5 @@
 from datetime import date, timedelta
-from typing import Callable
+from typing import Callable, Literal
 
 from rule import is_date_legal
 
