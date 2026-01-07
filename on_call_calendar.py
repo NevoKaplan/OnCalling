@@ -4,7 +4,7 @@ from datetime import date, timedelta
 from exceptions import NoAvailablePersonOnDate
 from person import Person
 
-class Calender:
+class OnCallCalendar:
     def __init__(self, people: list[Person]):
         self.people = people
         self.date_to_person = {}
@@ -64,12 +64,12 @@ def _iter_month(month: int, year: int = date.today().year):
         yield current
         current += timedelta(days=1)
 
-def get_people_on_call_biggest_diff(calender: Calender) -> int:
+def get_people_on_call_biggest_diff(calender: OnCallCalendar) -> int:
     if len(calender.people) < 2:
         return 0
 
     on_call_for = [person.get_on_call_amount for person in calender.people]
     return max(on_call_for) - min(on_call_for)
 
-def select_most_equal_calendar(calenders: list[Calender]) -> Calender:
+def select_most_equal_calendar(calenders: list[OnCallCalendar]) -> OnCallCalendar:
     return min(calenders, key=get_people_on_call_biggest_diff)
