@@ -31,19 +31,19 @@ def post_data(my_calender: OnCallCalendar, role = "Void") -> None:
 def main() -> None:
     all_rules = [(is_date_after_date, 90), (is_date_weekend_after_weekend, 80), (is_date_two_days_apart, 75)]
 
-    current_month = 1
+    current_month = 2
 
-    p1 = Person("Ne", [date(2026, 1, 1), date(2026, 1, 20), date(2026, 1, 30)], all_rules)
-    p1.add_time_period_unavailablity(date(2026, 1, 8), date(2026, 1, 17))
-    p2 = Person("Sh", [date(2026, 1, 2), date(2026, 1, 20), date(2026, 1, 21)], all_rules)
-    p3 = Person("Ei", [date(2026, 1, 1)], all_rules)
+    p1 = Person("Nevo", [date(2026, 2, 19)], all_rules)
+    p1.add_time_period_unavailablity(date(2026, 2, 2), date(2026, 2, 10))
+    p2 = Person("Shira", [], all_rules)
+    p2.add_time_period_unavailablity(date(2026, 2, 2), date(2026, 2, 10))
+    p3 = Person("Eidlin", [date(2026, 2, 3), date(2026, 2, 4),date(2026, 2, 14),date(2026, 2, 22),date(2026, 2, 23)], all_rules)
     p3.add_recurring_month_unavailabilities(current_month=current_month, recurring_isoday=7)
-    p3.add_recurring_month_unavailabilities(current_month=current_month, recurring_isoday=3)
-    p5 = Person("It", [date(2026, 1, 1), date(2026, 1, 13), date(2026, 1, 29)], all_rules)
-    p5.add_recurring_month_unavailabilities(current_month=current_month, recurring_isoday=3)
-    p6 = Person("Ni", [date(2026, 1, 2)], all_rules)
+    p3.add_recurring_month_unavailabilities(current_month=current_month, recurring_isoday=4)
+    p5 = Person("Nivi", [date(2026, 2, 19)], all_rules)
+    p5.add_time_period_unavailablity(date(2026, 2, 5), date(2026, 2, 9))
 
-    people = [p1, p2, p3, p5, p6]
+    people = [p1, p2, p3, p5]
     calendars = []
     for i in range(5):
         my_calender = OnCallCalendar(copy.deepcopy(people))

@@ -10,6 +10,14 @@ class OnCallCalendar:
         self.date_to_person = {}
 
 
+    @property
+    def get_amount_of_none_days(self) -> int:
+        amount_of_nones = 0
+        for person in self.date_to_person.values():
+            if person is None:
+                amount_of_nones += 1
+        return amount_of_nones
+
     def print_calender(self):
         for date_key, person in self.date_to_person.items():
             print(f"{str(date_key.strftime("%A, %d-%m-%Y"))} : {person.name if person else "None"}")
@@ -32,6 +40,7 @@ class OnCallCalendar:
         while not is_date_selected:
             if unavailable_people_count >= len(self.people):
                 raise NoAvailablePersonOnDate("No people :(", date=day)
+            unavailable_people_count = 0
             for person in self.people:
                 if day in person.unavailabilities:
                     unavailable_people_count += 1
@@ -71,5 +80,7 @@ def get_people_on_call_biggest_diff(calender: OnCallCalendar) -> int:
     on_call_for = [person.get_on_call_amount for person in calender.people]
     return max(on_call_for) - min(on_call_for)
 
-def select_most_equal_calendar(calenders: list[OnCallCalendar]) -> OnCallCalendar:
-    return min(calenders, key=get_people_on_call_biggest_diff)
+def select_most_equal_calendar(calendars: list[OnCallCalendar]) -> OnCallCalendar:
+    return min(calendars, key=lambda calendar: (
+        calendar.get_amount_of_none_days, get_people_on_call_biggest_diff(calendar)
+    ))
