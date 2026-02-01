@@ -6,11 +6,13 @@ Using this little script you can assign people to a day of the week fairly.
 You can even use the `Rule` concept which allows people to have a preference but leave it up to chance.
 
 For example:
-- Making sure a person isn't assigned two days in a row.
-- Making sure a person isn't assigned weekend after weekend.
 
-Even personal rules:
-- A person has a class on sunday so he'd rather not be assigned but *can* if there's no other choice...
+- Calendar Rules:
+  - Making sure a person isn't assigned two days in a row.
+  - Making sure a person isn't assigned weekend after weekend.
+
+- Personal Rules:
+  - A person has a class on sunday so he'd rather not be assigned but *can* if there's no other choice...
 
 ## Adding a person
 ### Examples:
