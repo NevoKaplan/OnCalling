@@ -3,11 +3,14 @@ from datetime import date, timedelta
 
 from exceptions import NoAvailablePersonOnDate
 from person import Person
+from rule import CalendarRule
+
 
 class OnCallCalendar:
-    def __init__(self, people: list[Person]):
+    def __init__(self, people: list[Person], calendar_rules: list[(CalendarRule, int)]):
         self.people = people
         self.date_to_person = {}
+        self.calendar_rules = calendar_rules
 
 
     @property
@@ -46,7 +49,9 @@ class OnCallCalendar:
                     unavailable_people_count += 1
                     continue
                 if person.add_on_call_date_by_rules(
-                        date_to_add=day, weight_offset=(weight_offset + len(person.unavailabilities))
+                        date_to_add=day,
+                        rules=self.calendar_rules,
+                        weight_offset=(weight_offset + len(person.unavailabilities))
                 ):
                     self.date_to_person[day] = person
                     is_date_selected = True

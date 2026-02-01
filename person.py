@@ -1,17 +1,20 @@
 from datetime import date, timedelta
 from typing import Callable
 
-from rule import is_date_legal
+from rule import is_date_legal_by_calendar_rules, CalendarRule, PersonalRule, is_date_legal_by_personal_rules
 
 
 class Person:
     def __init__(
-            self, name: str, unavailabilities: list[date], personal_rules: list[(Callable[[date, date], bool], int)]
+            self,
+            name: str,
+            unavailabilities: list[date],
+            personal_rules: list[(Callable[[date | int, date], bool], int)] | None = None
     ):
         self.name = name
         self.unavailabilities = unavailabilities
         self.on_call_dates = []
-        self.rules = personal_rules
+        self.personal_rules = personal_rules if personal_rules is not None else []
 
     @property
     def get_on_call_amount(self) -> int:
@@ -32,11 +35,15 @@ class Person:
             self.unavailabilities.append(current_date)
             current_date += timedelta(days=1)
 
-    def add_on_call_date_by_rules(self, date_to_add: date, weight_offset: int = 0) -> bool:
+    def add_on_call_date_by_rules(
+            self, date_to_add: date, rules: list[CalendarRule], weight_offset: int = 0
+    ) -> bool:
         if self.get_on_call_amount >= 1:
             for on_call_date in self.on_call_dates:
-                if not is_date_legal(on_call_date, date_to_add, self.rules, weight_offset):
+                if not is_date_legal_by_calendar_rules(on_call_date, date_to_add, rules, weight_offset):
                     return False
+        if not is_date_legal_by_personal_rules(date_to_add, self.personal_rules, weight_offset):
+            return False
         self.on_call_dates.append(date_to_add)
         return True
 
