@@ -32,7 +32,7 @@ person = Person("Nevo", [date(2026, 12, 1), date(2026, 12, 22)], personal_rules)
 ---
 The same person but he's not available for a couple of days in a row:
 ```python
-person = Person("Nevo", [date(2026, 12, 1), date(2026, 12, 22)])
+person = Person("Nevo", [date(2026, 12, 1)])
 person.add_time_period_unavailablity(date(2026, 12, 20), date(2026, 12, 24))
 ```
 ---
