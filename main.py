@@ -17,7 +17,7 @@ def main() -> None:
     p1.add_time_period_unavailablity(date(2026, current_month, 2), date(2026, current_month, 10))
     p2 = Person("Sh", [])
     p2.add_time_period_unavailablity(date(2026, current_month, 2), date(2026, current_month, 10))
-    p3 = Person("Ei", [date(2026, current_month, 3), date(2026, current_month, 4), date(2026, current_month, 14)], personal_eid_rules)
+    p3 = Person("Ei", [date(2026, current_month, 3),], personal_eid_rules)
     p3.add_recurring_month_unavailabilities(current_month=current_month, recurring_isoday=7)
     p4 = Person("Ni", [date(2026, current_month, 19)])
     p4.add_time_period_unavailablity(date(2026, current_month, 5), date(2026, current_month, 9))
