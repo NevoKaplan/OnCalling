@@ -1,5 +1,5 @@
 # OnCalling
-Project for selected people to stay `on call` after work during the week.
+Project for selecting people to stay `on call` after work during the week.
 
 Using this little script you can assign people to a day of the week fairly.
 
